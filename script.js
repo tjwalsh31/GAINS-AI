@@ -66,7 +66,9 @@ async function generateWorkout() {
     workoutOutput.innerHTML = `<p>Loading your AI-generated workout plan...</p>`;
 
     const selectedBodyParts = Array.from(document.querySelectorAll('input[name="bodyPart"]:checked')).map(checkbox => checkbox.value);
-    const skillLevel = document.getElementById('skillLevel').value;
+    const skillLevel = document.getElementById('skillLevel').value; // Get skill level value
+
+    const prompt = `Generate a workout plan for the following body parts: ${selectedBodyParts.join(', ')}. Skill level: ${skillLevel}.`;
 
     try {
         console.log('Fetching exercises from ExerciseDB');
@@ -89,15 +91,9 @@ async function generateWorkout() {
             allExercises = allExercises.concat(data);
         }
 
-        console.log('Filtering exercises based on body part and skill level');
-        // Filter exercises based on body part and skill level
-        const filteredExercises = allExercises.filter(exercise => {
-            const matchesBodyPart = selectedBodyParts.includes(exercise.bodyPart.toLowerCase());
-            const matchesSkillLevel = (skillLevel === 'advanced') ||
-                                     (skillLevel === 'intermediate' && exercise.difficulty !== 'advanced') ||
-                                     (skillLevel === 'beginner' && exercise.difficulty === 'beginner');
-            return matchesBodyPart && matchesSkillLevel;
-        });
+        console.log('Filtering exercises based on body part');
+        // Filter exercises based on body part only
+        const filteredExercises = allExercises.filter(exercise => selectedBodyParts.includes(exercise.bodyPart.toLowerCase()));
 
         console.log('Filtered Exercises:', filteredExercises);
 
@@ -108,7 +104,7 @@ async function generateWorkout() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ exercises: filteredExercises, skillLevel: skillLevel })
+            body: JSON.stringify({ exercises: filteredExercises, skillLevel: skillLevel }) // Include skill level in the request
         });
 
         if (!response.ok) {
