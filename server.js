@@ -28,14 +28,17 @@ app.post('/generate-workout', async (req, res) => {
         const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' }); // Use 'gemini-1.5-flash' model
 
         // Create a detailed prompt
-        const prompt = `Generate a workout plan using the following exercises: ${exercises.map(ex => ex.name).join(', ')}. 
+        const prompt = `Generate a ${skillLevel} workout plan using the following exercises: ${exercises.map(ex => ex.name).join(', ')}. 
             Include sets, reps, and rest periods. Format as HTML paragraphs.`;
 
         console.log('Sending prompt to Google Generative AI:', prompt);
 
         // Generate content
         const result = await model.generateContent(prompt);
-        const text = result.response.text();
+        let text = result.response.text();
+
+        // Replace \n with <br> for HTML formatting
+        text = text.replace(/\n/g, '<br>');
 
         // Send the generated workout plan as JSON
         res.json({ 

@@ -55,15 +55,9 @@ async function generateWorkout() {
             allExercises = allExercises.concat(data);
         }
 
-        console.log('Filtering exercises based on body part and skill level');
-        // Filter exercises based on body part and skill level
-        const filteredExercises = allExercises.filter(exercise => {
-            const matchesBodyPart = selectedBodyParts.includes(exercise.bodyPart);
-            const matchesSkillLevel = (skillLevel === 'advanced') ||
-                                     (skillLevel === 'intermediate' && exercise.difficulty !== 'advanced') ||
-                                     (skillLevel === 'beginner' && exercise.difficulty === 'beginner');
-            return matchesBodyPart && matchesSkillLevel;
-        });
+        console.log('Filtering exercises based on body part');
+        // Filter exercises based on body part
+        const filteredExercises = allExercises.filter(exercise => selectedBodyParts.includes(exercise.bodyPart));
 
         console.log('Filtered Exercises:', filteredExercises);
 
