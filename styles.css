@@ -164,11 +164,18 @@ body {
     border-radius: 5px;
     margin-top: 20px;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
 }
 
 .generate-meal:hover {
     background-color: #2980b9;
     transform: scale(1.05);
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
 }
 
 #meal-output {
@@ -177,6 +184,9 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
 }
 
 .meal-box {
@@ -187,6 +197,9 @@ body {
     width: 300px;
     text-align: left;
     transition: transform 0.3s ease-in-out;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
 }
 
 .meal-box:hover {
@@ -200,6 +213,174 @@ body {
 }
 
 .meal-box p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Dietary Restrictions Section */
+.dietary-restrictions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.dietary-restrictions label {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 20px;
+    border-radius: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.dietary-restrictions label:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-3px);
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.dietary-restrictions input[type="checkbox"] {
+    margin-right: 10px;
+    cursor: pointer;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Meal Plan Form Styling */
+#meal-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: left;
+}
+
+#meal-form label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-top: 15px;
+}
+
+#meal-form input[type="text"],
+#meal-form input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 2px solid #3498db;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #2c3e50;
+    background: rgba(255, 255, 255, 0.9);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+#meal-form input[type="text"]:hover,
+#meal-form input[type="number"]:hover {
+    border-color: #2980b9;
+    transform: scale(1.02);
+}
+
+/* Move Generate Meal Plan Button Below Protein Intake */
+#meal-form .generate-button-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Dietary Restrictions Section */
+.dietary-restrictions {
+    margin-bottom: 20px;
+}
+
+.dietary-restrictions label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 20px;
+    border-radius: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.checkbox-group label:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-3px);
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* Generate Meal Plan Button Container */
+.generate-button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.generate-button-container input[type="submit"] {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.generate-button-container input[type="submit"]:hover {
+    background-color: #219150;
+    transform: scale(1.05);
+}
+
+/* Meal Result Styling */
+#meal-result {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: left;
+}
+
+#meal-result h3 {
+    font-size: 20px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+#meal-result p {
     font-size: 16px;
     color: #555;
     line-height: 1.6;
@@ -219,6 +400,55 @@ body {
     margin-bottom: 40px;
 }
 
+/* Workout Options Container */
+#Workouts .workout-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+/* Checkbox Labels */
+#Workouts label {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 20px;
+    border-radius: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+#Workouts label:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-3px);
+}
+
+#Workouts input[type="checkbox"] {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* Skill Level Dropdown */
+#skillLevel {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 2px solid #3498db;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #2c3e50;
+    cursor: pointer;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+#skillLevel:hover {
+    border-color: #2980b9;
+    transform: scale(1.05);
+}
+
+/* Generate Workout Button */
 .generate-workout {
     background-color: #e67e22;
     color: white;
@@ -227,8 +457,8 @@ body {
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 5px;
-    margin-top: 20px;
+    border-radius: 25px;
+    margin-top: 30px;
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
@@ -237,6 +467,7 @@ body {
     transform: scale(1.05);
 }
 
+/* Workout Output Container */
 #workout-output {
     margin-top: 40px;
     display: flex;
@@ -245,6 +476,7 @@ body {
     gap: 20px;
 }
 
+/* Workout Box Styling */
 .workout-box {
     background: rgba(255, 255, 255, 0.9);
     padding: 20px;
@@ -271,16 +503,30 @@ body {
     line-height: 1.6;
 }
 
-/* 📱 Responsive Design for Meal Plans and Workouts */
+/* 📱 Responsive Design for Workouts Section */
 @media (max-width: 768px) {
-    .meal-box, .workout-box {
+    #Workouts .workout-options {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #Workouts label {
+        width: 100%;
+        justify-content: center;
+    }
+
+    #skillLevel {
         width: 100%;
     }
 
-    .generate-meal, .generate-workout {
+    .generate-workout {
         width: 100%;
         padding: 14px 28px;
         font-size: 16px;
+    }
+
+    .workout-box {
+        width: 100%;
     }
 }
 

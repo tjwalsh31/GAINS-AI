@@ -1,0 +1,224 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+/* Header styles */
+header {
+    background: #333;
+    color: #fff;
+    padding-top: 30px;
+    min-height: 70px;
+    border-bottom: #77aaff 3px solid;
+}
+
+header a {
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 16px;
+}
+
+header ul {
+    padding: 0;
+    list-style: none;
+}
+
+header li {
+    float: left;
+    display: inline;
+    padding: 0 20px 0 20px;
+}
+
+header #branding {
+    float: left;
+}
+
+header #branding h1 {
+    margin: 0;
+}
+
+header nav {
+    float: right;
+    margin-top: 10px;
+}
+
+/* Main content styles */
+main {
+    padding: 20px;
+    background: #fff;
+    margin-top: 20px;
+}
+
+h1, h2, h3 {
+    color: #333;
+}
+
+/* Form styles */
+form {
+    margin: 20px 0;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+form input, form select, form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+form input[type="submit"] {
+    background: #333;
+    color: #fff;
+    border: 0;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+form input[type="submit"]:hover {
+    background: #77aaff;
+}
+
+/* Footer styles */
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+/* Generate Meal Plan Button Container */
+.generate-button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.generate-button-container input[type="submit"] {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.generate-button-container input[type="submit"]:hover {
+    background-color: #219150;
+    transform: scale(1.05);
+}
+
+/* Meal Plan Form Styling */
+#meal-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: left;
+}
+
+#meal-form label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-top: 15px;
+}
+
+#meal-form input[type="text"],
+#meal-form input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 2px solid #3498db;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #2c3e50;
+    background: rgba(255, 255, 255, 0.9);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+#meal-form input[type="text"]:hover,
+#meal-form input[type="number"]:hover {
+    border-color: #2980b9;
+    transform: scale(1.02);
+}
+
+/* Dietary Restrictions Section */
+.dietary-restrictions {
+    margin-bottom: 20px;
+}
+
+.dietary-restrictions label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 20px;
+    border-radius: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.checkbox-group label:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-3px);
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* Meal Result Styling */
+#meal-result {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: left;
+}
+
+#meal-result h3 {
+    font-size: 20px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+#meal-result p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+}

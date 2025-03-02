@@ -17,10 +17,48 @@ function changeTab(tabName) {
 // Open the default tab on page load
 document.getElementById('defaultOpen').click();
 
-function generateMealPlan() {
+async function generateMealPlan() {
     const mealOutput = document.getElementById('meal-output');
-    mealOutput.innerHTML = `<p>Your AI-generated meal plan will appear here.</p>`;
-    // Call your API or logic here to generate the meal plan
+    mealOutput.innerHTML = `<p>Loading your AI-generated meal plan...</p>`;
+
+    const dietaryRestrictions = Array.from(document.querySelectorAll('input[name="dietaryRestriction"]:checked')).map(checkbox => checkbox.value);
+    const favoriteFoods = document.getElementById('favoriteFoods').value.split(',').map(food => food.trim());
+    const calories = document.getElementById('calories').value;
+    const protein = document.getElementById('protein').value;
+
+    try {
+        console.log('Sending request to Node.js server to generate meal plan');
+        // Call the Node.js server to generate the meal plan
+        const response = await fetch('http://localhost:3005/generate-meal-plan', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ dietaryRestrictions, favoriteFoods, calories, protein })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to generate meal plan: ${response.statusText}`);
+        }
+
+        // Parse the response as JSON
+        const data = await response.json();
+        console.log('Received meal plan from Node.js server:', data.mealPlan);
+
+        // Display the meal plan
+        mealOutput.innerHTML = `
+            <div class="meal-plan">
+                <h3>Your AI-Generated Meal Plan:</h3>
+                <p>${data.mealPlan}</p>
+            </div>
+        `;
+    } catch (error) {
+        console.error('Error generating meal plan:', error);
+        mealOutput.innerHTML = `
+            <p>Failed to load meal plan. Please try again later.</p>
+            <p>Error: ${error.message}</p>
+        `;
+    }
 }
 
 async function generateWorkout() {
@@ -30,10 +68,6 @@ async function generateWorkout() {
     const selectedBodyParts = Array.from(document.querySelectorAll('input[name="bodyPart"]:checked')).map(checkbox => checkbox.value);
     const skillLevel = document.getElementById('skillLevel').value;
 
-    let intervalId = setInterval(() => {
-        console.log('Still working on generating the workout plan...');
-    }, 1000); // Log every second
-
     try {
         console.log('Fetching exercises from ExerciseDB');
         // Fetch exercises for each selected body part from ExerciseDB
@@ -42,7 +76,7 @@ async function generateWorkout() {
             const response = await fetch(`https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`, {
                 method: 'GET',
                 headers: {
-                    'X-RapidAPI-Key': 'd47f788badmsh829fb15b0d01428p133b75jsn596099baedb4',
+                    'X-RapidAPI-Key': '69d48150d3msh8c3eb0b05f8a0abp1af5abjsn5e4218f69a42',
                     'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com'
                 }
             });
@@ -55,15 +89,21 @@ async function generateWorkout() {
             allExercises = allExercises.concat(data);
         }
 
-        console.log('Filtering exercises based on body part');
-        // Filter exercises based on body part
-        const filteredExercises = allExercises.filter(exercise => selectedBodyParts.includes(exercise.bodyPart));
+        console.log('Filtering exercises based on body part and skill level');
+        // Filter exercises based on body part and skill level
+        const filteredExercises = allExercises.filter(exercise => {
+            const matchesBodyPart = selectedBodyParts.includes(exercise.bodyPart.toLowerCase());
+            const matchesSkillLevel = (skillLevel === 'advanced') ||
+                                     (skillLevel === 'intermediate' && exercise.difficulty !== 'advanced') ||
+                                     (skillLevel === 'beginner' && exercise.difficulty === 'beginner');
+            return matchesBodyPart && matchesSkillLevel;
+        });
 
         console.log('Filtered Exercises:', filteredExercises);
 
         console.log('Sending request to Node.js server to generate workout plan');
         // Call the Node.js server to generate the workout plan
-        const response = await fetch('http://localhost:3005/generate-workout', { // Updated port number to 3005
+        const response = await fetch('http://localhost:3005/generate-workout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -75,32 +115,30 @@ async function generateWorkout() {
             throw new Error(`Failed to generate workout plan: ${response.statusText}`);
         }
 
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder();
-        let workoutPlan = '';
+        const data = await response.json();
+        console.log('Received workout plan from Node.js server:', data.workoutPlan);
 
-        while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            workoutPlan += decoder.decode(value, { stream: true });
-            workoutOutput.innerHTML = `
-                <div class="workout-plan">
-                    <h3>Your AI-Generated Workout Plan:</h3>
-                    <p>${workoutPlan}</p>
-                </div>
-            `;
-        }
-
-        console.log('Received workout plan from Node.js server:', workoutPlan);
+        // Display the workout plan
+        workoutOutput.innerHTML = `
+            <div class="workout-plan">
+                <h3>Your AI-Generated Workout Plan:</h3>
+                <p>${data.workoutPlan}</p>
+            </div>
+        `;
     } catch (error) {
         console.error('Error generating workout plan:', error);
-        workoutOutput.innerHTML = `<p>Failed to load workout plan. Please try again later.</p>`;
-    } finally {
-        clearInterval(intervalId); // Clear the interval when done
+        workoutOutput.innerHTML = `
+            <p>Failed to load workout plan. Please try again later.</p>
+            <p>Error: ${error.message}</p>
+        `;
     }
 }
 
-async function testListWorkouts(bodyPart) {
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function testListWorkouts(bodyPart, retries = 3, delayMs = 1000) {
     try {
         // Use the correct endpoint for the ExerciseDB API
         const url = `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`;
@@ -115,6 +153,11 @@ async function testListWorkouts(bodyPart) {
         // Fetch data from the API
         const response = await fetch(url, options);
         if (!response.ok) {
+            if (response.status === 429 && retries > 0) {
+                console.warn(`Rate limit exceeded. Retrying in ${delayMs}ms...`);
+                await delay(delayMs);
+                return testListWorkouts(bodyPart, retries - 1, delayMs * 2); // Exponential backoff
+            }
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
@@ -132,5 +175,5 @@ async function testListWorkouts(bodyPart) {
 }
 
 // Example usage:
-testListWorkouts('chest');
-testListWorkouts('waist');
+//testListWorkouts('chest');
+//testListWorkouts('waist');

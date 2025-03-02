@@ -32,7 +32,20 @@
     <div id="MealPlans" class="tabcontent">
         <h1>AI-Generated Meal Plans</h1>
         <p>Our AI creates personalized meal plans based on your caloric needs and dietary preferences.</p>
-        <button class="generate-meal" onclick="generateMealPlan()">Generate Meal Plan</button>
+        <h2>Dietary Restrictions</h2>
+        <div class="dietary-restrictions">
+            <label><input type="checkbox" name="dietaryRestriction" value="vegan"> Vegan</label>
+            <label><input type="checkbox" name="dietaryRestriction" value="vegetarian"> Vegetarian</label>
+            <label><input type="checkbox" name="dietaryRestriction" value="gluten-free"> Gluten-Free</label>
+            <label><input type="checkbox" name="dietaryRestriction" value="dairy-free"> Dairy-Free</label>
+        </div>
+        <h2>Favorite Foods</h2>
+        <input type="text" id="favoriteFoods" placeholder="Enter your favorite foods, separated by commas">
+        <h2>Caloric Needs</h2>
+        <input type="text" id="calories" placeholder="Enter your desired calorie range (e.g., 2000-2500)">
+        <h2>Protein Intake</h2>
+        <input type="text" id="protein" placeholder="Enter your desired protein intake (e.g., 50-100)">
+        <h3><button class="generate-meal" onclick="generateMealPlan()">Generate Meal Plan</button></h3>
         <div id="meal-output"></div>
     </div>
 
