@@ -40,6 +40,19 @@
     <div id="Workouts" class="tabcontent">
         <h1>AI-Generated Workouts</h1>
         <p>Get workout recommendations tailored to your fitness goals.</p>
+        <div>
+            <label><input type="checkbox" name="bodyPart" value="chest"> Chest</label>
+            <label><input type="checkbox" name="bodyPart" value="back"> Back</label>
+            <label><input type="checkbox" name="bodyPart" value="legs"> Legs</label>
+            <label><input type="checkbox" name="bodyPart" value="arms"> Arms</label>
+            <label><input type="checkbox" name="bodyPart" value="shoulders"> Shoulders</label>
+            <label><input type="checkbox" name="bodyPart" value="abs"> Abs</label>
+        </div>
+        <select id="skillLevel">
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+        </select>
         <button class="generate-workout" onclick="generateWorkout()">Generate Workout Plan</button>
         <div id="workout-output"></div>
     </div>
