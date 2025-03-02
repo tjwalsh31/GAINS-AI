@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "@google/generative-ai": "^0.22.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "get-port": "^7.1.0",
+    "node-fetch": "^3.3.2"
+  },
+  "name": "gains-ai-1",
+  "version": "1.0.0",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tjwalsh31/GAINS-AI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tjwalsh31/GAINS-AI/issues"
+  },
+  "homepage": "https://github.com/tjwalsh31/GAINS-AI#readme",
+  "description": ""
+}

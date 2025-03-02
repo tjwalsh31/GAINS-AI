@@ -24,65 +24,88 @@ function generateMealPlan() {
 }
 
 async function generateWorkout() {
-        const workoutOutput = document.getElementById('workout-output');
-        workoutOutput.innerHTML = `<p>Loading your AI-generated workout plan...</p>`;
-    
-        // Get user inputs
-        const selectedBodyParts = Array.from(document.querySelectorAll('input[name="bodyPart"]:checked')).map(checkbox => checkbox.value);
-        const skillLevel = document.getElementById('skillLevel').value;
-    
-        try {
-            // Fetch exercises for each selected body part from ExerciseDB
-            let allExercises = [];
-            for (const bodyPart of selectedBodyParts) {
-                const response = await fetch(`https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`, {
-                    method: 'GET',
-                    headers: {
-                        'X-RapidAPI-Key': 'd47f788badmsh829fb15b0d01428p133b75jsn596099baedb4',
-                        'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com'
-                    }
-                });
-    
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch exercises for ${bodyPart}`);
-                }
-    
-                const data = await response.json();
-                allExercises = allExercises.concat(data);
-            }
-    
-            // Filter exercises based on skill level
-            const filteredExercises = allExercises.filter(exercise => {
-                const matchesSkillLevel = (skillLevel === 'advanced') ||
-                                         (skillLevel === 'intermediate' && exercise.difficulty !== 'advanced') ||
-                                         (skillLevel === 'beginner' && exercise.difficulty === 'beginner');
-                return matchesSkillLevel;
-            });
-    
-            // Integrate with Gemini AI to refine the workout plan
-            const aiSelectedExercises = await fetch('https://generativelanguage.googleapis.com', { // Replace with actual Gemini API endpoint
-                method: 'POST',
+    const workoutOutput = document.getElementById('workout-output');
+    workoutOutput.innerHTML = `<p>Loading your AI-generated workout plan...</p>`;
+
+    const selectedBodyParts = Array.from(document.querySelectorAll('input[name="bodyPart"]:checked')).map(checkbox => checkbox.value);
+    const skillLevel = document.getElementById('skillLevel').value;
+
+    let intervalId = setInterval(() => {
+        console.log('Still working on generating the workout plan...');
+    }, 1000); // Log every second
+
+    try {
+        console.log('Fetching exercises from ExerciseDB');
+        // Fetch exercises for each selected body part from ExerciseDB
+        let allExercises = [];
+        for (const bodyPart of selectedBodyParts) {
+            const response = await fetch(`https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`, {
+                method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer AIzaSyCnxHgeTKwPqMyKhyYN3IT-wQiA2AAnaAs' // Replace with your actual API key
-                },
-                body: JSON.stringify({ exercises: filteredExercises, skillLevel: skillLevel })
-            }).then(res => res.json());
-    
-            // Display the AI-selected exercises
-            workoutOutput.innerHTML = aiSelectedExercises.map(exercise => `
-                <div class="exercise">
-                    <h3>${exercise.name}</h3>
-                    <p>Body Part: ${exercise.bodyPart}</p>
-                    <p>Equipment: ${exercise.equipment}</p>
-                    <p>Target: ${exercise.target}</p>
-                </div>
-            `).join('');
-        } catch (error) {
-            console.error('Error generating workout plan:', error);
-            workoutOutput.innerHTML = `<p>Failed to load workout plan. Please try again later.</p>`;
+                    'X-RapidAPI-Key': 'd47f788badmsh829fb15b0d01428p133b75jsn596099baedb4',
+                    'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch exercises for ${bodyPart}`);
+            }
+
+            const data = await response.json();
+            allExercises = allExercises.concat(data);
         }
+
+        console.log('Filtering exercises based on body part and skill level');
+        // Filter exercises based on body part and skill level
+        const filteredExercises = allExercises.filter(exercise => {
+            const matchesBodyPart = selectedBodyParts.includes(exercise.bodyPart);
+            const matchesSkillLevel = (skillLevel === 'advanced') ||
+                                     (skillLevel === 'intermediate' && exercise.difficulty !== 'advanced') ||
+                                     (skillLevel === 'beginner' && exercise.difficulty === 'beginner');
+            return matchesBodyPart && matchesSkillLevel;
+        });
+
+        console.log('Filtered Exercises:', filteredExercises);
+
+        console.log('Sending request to Node.js server to generate workout plan');
+        // Call the Node.js server to generate the workout plan
+        const response = await fetch('http://localhost:3005/generate-workout', { // Updated port number to 3005
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ exercises: filteredExercises, skillLevel: skillLevel })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to generate workout plan: ${response.statusText}`);
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let workoutPlan = '';
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            workoutPlan += decoder.decode(value, { stream: true });
+            workoutOutput.innerHTML = `
+                <div class="workout-plan">
+                    <h3>Your AI-Generated Workout Plan:</h3>
+                    <p>${workoutPlan}</p>
+                </div>
+            `;
+        }
+
+        console.log('Received workout plan from Node.js server:', workoutPlan);
+    } catch (error) {
+        console.error('Error generating workout plan:', error);
+        workoutOutput.innerHTML = `<p>Failed to load workout plan. Please try again later.</p>`;
+    } finally {
+        clearInterval(intervalId); // Clear the interval when done
     }
+}
+
 async function testListWorkouts(bodyPart) {
     try {
         // Use the correct endpoint for the ExerciseDB API
@@ -116,3 +139,4 @@ async function testListWorkouts(bodyPart) {
 
 // Example usage:
 testListWorkouts('chest');
+testListWorkouts('waist');
