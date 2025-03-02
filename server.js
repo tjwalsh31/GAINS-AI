@@ -19,7 +19,7 @@ console.log('EDAMAM_USER_ID:', EDAMAM_USER_ID);
 
 // Enable CORS for all routes with specific origin
 app.use(cors({
-    origin: 'http://127.0.0.1:5500', // Ensure this matches your frontend URL
+    origin: 'https://tjwalsh31.github.io/GAINS-AI/', // Ensure this matches your frontend URL
     methods: ['POST', 'GET'],
     allowedHeaders: ['Content-Type']
 }));
